@@ -14,7 +14,6 @@ class App extends React.Component {
   }
 
   render() {
-    const { posts } = this.props;
     return (
       <Router>
         {/* This will the react router that this is the root application */}
@@ -40,12 +39,13 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    posts: state.posts,
+
   };
 }
 
-App.propTypes = {
-  posts: PropTypes.array.isRequired,
-};
+// App.propTypes = {
+//   posts: PropTypes.array.isRequired,
+// };
 
 export default connect(mapStateToProps)(App);
+
