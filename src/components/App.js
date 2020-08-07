@@ -1,17 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PropTypes from 'prop-types';
 
 import { fetchPosts } from '../actions/posts';
-import { PostsList,Navbar } from './';
+import { Home, Navbar, Page404 } from './';
 
 
 const Login = () => (
   <div>Login</div>
 );
-
-const Home = () => <div>Home</div>;
 
 const SignUp = () => <div>SignUp</div>;
 
@@ -27,24 +25,18 @@ class App extends React.Component {
         {/* This will the react router that this is the root application */}
         <div>
           <Navbar />
-          {/* <PostsList posts={posts} /> */}
-
-          <ul>
-            <li>
-              {/* We are not using thethe a tag because providing the href to the a tag will refresh the page again */}
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/signup">Sign Up</Link>
-            </li>
-          </ul>
-
-          <Route exact path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={SignUp} />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={(props) => {
+                return <Home {...props} />;
+              }}
+            />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={SignUp} />
+            <Route component={Page404} />
+          </Switch>
         </div>
       </Router>
     );

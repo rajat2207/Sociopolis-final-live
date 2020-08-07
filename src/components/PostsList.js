@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import  PropTypes  from 'prop-types';
+import { connect } from 'react-redux';
 
 class PostsList extends Component {
     render() {
@@ -69,4 +70,10 @@ PostsList.propTypes = {
   posts: PropTypes.array.isRequired,
 }
 
-export default PostsList;
+function mapStateToProps(state) {
+  return {
+    posts: state.posts,
+  };
+}
+
+export default connect(mapStateToProps)(PostsList);
