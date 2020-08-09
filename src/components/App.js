@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { fetchPosts } from '../actions/posts';
-import { Home, Navbar, Page404, Login } from './';
+import { Home, Navbar, Page404, Login, Signup } from './';
 
 import * as jwtDecode from 'jwt-decode';
+import { authenticateUser } from '../actions/auth';
 
-const SignUp = () => <div>SignUp</div>;
 
 class App extends React.Component {
   componentDidMount() {
@@ -19,6 +19,13 @@ class App extends React.Component {
       const user = jwtDecode(token);
 
       console.log('user', user);
+      this.props.dispatch(
+        authenticateUser({
+          email: user.email,
+          _id: user._id,
+          name: user.name,
+        })
+      );
     }
   }
 
@@ -37,7 +44,7 @@ class App extends React.Component {
               }}
             />
             <Route path="/login" component={Login} />
-            <Route path="/signup" component={SignUp} />
+            <Route path="/signup" component={Signup} />
             <Route component={Page404} />
           </Switch>
         </div>
@@ -47,9 +54,7 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {
-
-  };
+  return {};
 }
 
 // App.propTypes = {
@@ -57,4 +62,3 @@ function mapStateToProps(state) {
 // };
 
 export default connect(mapStateToProps)(App);
-

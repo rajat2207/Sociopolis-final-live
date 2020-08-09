@@ -1,7 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-function Navbar() {
+import { logoutUser } from '../actions/auth';
+
+class Navbar extends React.Component {
+
+  logOut = () => {
+    localStorage.removeItem('token');
+    this.props.dispatch(logoutUser());
+  }
+
+  render() {
+    const { auth } = this.props;
     return (
       <nav className="nav">
         <div className="left-div">
@@ -40,30 +51,48 @@ function Navbar() {
           </div>
         </div>
         <div className="right-nav">
-          <div className="user">
-            <img
-              src="https://image.flaticon.com/icons/svg/2154/2154651.svg"
-              alt="user-dp"
-              id="user-dp"
-            />
-            <span>John Doe</span>
-          </div>
+          {auth.isLoggedIn && (
+            <div className="user">
+              <img
+                src="https://image.flaticon.com/icons/svg/2154/2154651.svg"
+                alt="user-dp"
+                id="user-dp"
+              />
+              <span>{auth.user.name}</span>
+            </div>
+          )}
+
           <div className="nav-links">
             <ul>
-              <li>
-                <Link to="/login">Log In</Link>
-              </li>
-              <li>
-                <Link to="/logout">Log Out</Link>
-              </li>
-              <li>
-                <Link to="/signup">Sign Up</Link>
-              </li>
+              {!auth.isLoggedIn && (
+                <li>
+                  <Link to="/login">Log In</Link>
+                </li>
+              )}
+
+              {auth.isLoggedIn && (
+                <li onClick={this.logOut}>
+                  Log Out
+                </li>
+              )}
+
+              {!auth.isLoggedIn && (
+                <li>
+                  <Link to="/signup">Sign Up</Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
       </nav>
     );
+  }
 }
 
-export default Navbar;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps)(Navbar);

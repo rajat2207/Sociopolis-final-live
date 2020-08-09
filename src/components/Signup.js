@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { startSingup, signup } from '../actions/auth';
+import { startSignup, signup } from '../actions/auth';
 
 class Signup extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Signup extends Component {
     const { email, password, confirmPassword, name } = this.state;
 
     if (email && password && confirmPassword && name) {
-      this.props.dispatch(startSingup());
+      this.props.dispatch(startSignup());
       this.props.dispatch(signup(email, password, confirmPassword, name));
     }
   };
