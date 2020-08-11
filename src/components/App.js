@@ -91,7 +91,7 @@ class App extends React.Component {
               isLoggedIn={isLoggedIn}
             />
             <PrivateRoute
-              path="/user"
+              path="/user/:userId"
               component={UserProfile}
               isLoggedIn={isLoggedIn}
             />
