@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { editUser, clearAuthState } from '../actions/auth';
 
 class Settings extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class Settings extends Component {
       password: '',
       confirmPassword: '',
       editMode: false,
+      issue: '',
     };
   }
 
@@ -18,9 +20,43 @@ class Settings extends Component {
     });
   };
 
-  render() {
+  handleSave = () => {
+    const { name, password, confirmPassword } = this.state;
     const { user } = this.props.auth;
-    const { editMode } = this.state;
+
+    if (name === '') {
+      this.handleIssue('Name Feild is Empty');
+      return;
+    }
+
+    if (password === '') {
+      this.handleIssue('Password Feild is Empty');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      this.handleIssue(`Passwords don't match`);
+      return;
+    }
+
+    this.handleIssue('');
+    
+    this.props.dispatch(editUser(name, password, confirmPassword, user._id));
+  };
+
+  handleIssue = (issue) => {
+    this.setState({
+      issue,
+    });
+  };
+
+  componentWillUnmount() {
+    this.props.dispatch(clearAuthState());
+  }
+
+  render() {
+    const { user, error } = this.props.auth;
+    const { editMode, issue } = this.state;
     return (
       <div className="settings">
         <div className="img-container">
@@ -30,6 +66,13 @@ class Settings extends Component {
           />
         </div>
 
+        {error && <div className="alert error-dialog">{error}</div>}
+        {error === false && (
+          <div className="alert success-dialog">
+            Profile Successfully Updated!
+          </div>
+        )}
+        {issue.length > 0 && <div className="alert error-dialog">{issue}</div>}
         <div className="field">
           <div className="field-label">Email</div>
           <div className="field-value">{user.email}</div>
@@ -73,7 +116,9 @@ class Settings extends Component {
 
           <div className="btn-grp">
             {editMode ? (
-              <button className="button save-btn">Save</button>
+              <button className="button save-btn" onClick={this.handleSave}>
+                Save
+              </button>
             ) : (
               <button
                 className="button edit-btn"

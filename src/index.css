@@ -41,12 +41,12 @@ code {
   align-self: flex-start;
 }
 
-.error-dailog {
+.error-dialog {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
 }
-.success-dailog {
+.success-dialog {
   color: #155724;
   background-color: #d4edda;
   border-color: #c3e6cb;
@@ -453,7 +453,7 @@ nav .nav-links ul li:hover {
 .settings .edit-btn {
   border: 1px solid #ef7917;
   box-sizing: border-box;
-  color: #ef7917;
+  color: #fff;
 }
 .settings .save-btn {
   background: #ef7917;
