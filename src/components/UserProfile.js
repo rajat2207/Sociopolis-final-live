@@ -139,7 +139,12 @@ class UserProfile extends Component {
               Add Friend
             </button>
           ) : (
-            <button className="button save-btn">Remove Friend</button>
+            <button
+              className="button save-btn"
+              onClick={this.handleRemoveFriendClick}
+            >
+              Remove Friend
+            </button>
           )}
 
           {success && (
