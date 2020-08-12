@@ -20,7 +20,6 @@ import * as jwtDecode from 'jwt-decode';
 import { authenticateUser } from '../actions/auth';
 import { fetchUserFriends } from '../actions/friends';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
-import auth from '../reducers/auth';
 
 const PrivateRoute = (privateRouteProps) => {
   const {
