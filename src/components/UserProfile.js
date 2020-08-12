@@ -3,7 +3,7 @@ import { fetchUserProfile } from '../actions/profile';
 import { connect } from 'react-redux';
 import { APIUrls } from '../helpers/urls';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
-import { addFriend } from '../actions/friends';
+import { addFriend, removeFriend } from '../actions/friends';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class UserProfile extends Component {
     this.state = {
       success: null,
       error: null,
+      successMessage: null,
     };
   }
 
@@ -57,6 +58,7 @@ class UserProfile extends Component {
       this.setState({
         success: true,
         error: null,
+        successMessage: 'Added Friend Successfully',
       });
 
       this.props.dispatch(addFriend(data.data.friendship));
@@ -68,8 +70,40 @@ class UserProfile extends Component {
     }
   };
 
+  handleRemoveFriendClick = async () => {
+    // Mini Assignment
+    const { match } = this.props;
+    const url = APIUrls.removeFriend(match.params.userId);
+
+    const extra = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,
+      },
+    };
+
+    const response = await fetch(url, extra);
+    const data = await response.json();
+    console.log('await data', data);
+
+    if (data.success) {
+      // show user message
+      this.setState({
+        success: true,
+        successMessage: 'Removed friend successfully!',
+      });
+      this.props.dispatch(removeFriend(match.params.userId));
+    } else {
+      this.setState({
+        success: null,
+        error: data.message,
+      });
+    }
+  };
+
   render() {
-    const { success, error } = this.state;
+    const { success, error, successMessage } = this.state;
     const { user, inProgress } = this.props.profile;
 
     const isUserAFriend = this.checkIfUserIsAFriend();
@@ -109,9 +143,7 @@ class UserProfile extends Component {
           )}
 
           {success && (
-            <div className="alert success-dialog">
-              Friend Added Successfully
-            </div>
+            <div className="alert success-dialog">{successMessage}</div>
           )}
           {error && <div className="alert error-dialog">{error}</div>}
         </div>
