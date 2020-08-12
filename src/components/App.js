@@ -18,7 +18,9 @@ import {
 } from './';
 import * as jwtDecode from 'jwt-decode';
 import { authenticateUser } from '../actions/auth';
+import { fetchUserFriends } from '../actions/friends';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
+import auth from '../reducers/auth';
 
 const PrivateRoute = (privateRouteProps) => {
   const {
@@ -65,11 +67,14 @@ class App extends React.Component {
           name: user.name,
         })
       );
+
+      this.props.dispatch(fetchUserFriends());
     }
   }
 
   render() {
     const { isLoggedIn } = this.props.auth;
+    const { friends } = this.props;
     return (
       <Router>
         {/* This will the react router that this is the root application */}
@@ -80,7 +85,9 @@ class App extends React.Component {
               exact
               path="/"
               render={(props) => {
-                return <Home {...props} />;
+                return (
+                  <Home {...props} friends={friends} isLoggedIn={isLoggedIn} />
+                );
               }}
             />
             <Route path="/login" component={Login} />
@@ -106,6 +113,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    friends: state.friends,
   };
 }
 

@@ -16,7 +16,7 @@ class UserProfile extends Component {
   render() {
     const { user, inProgress } = this.props.profile;
     if (inProgress) {
-      return <div class="loader"></div>;
+      return <h1>Loading!</h1>;
     }
     return (
       <div className="settings">
